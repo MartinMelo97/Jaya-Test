@@ -3,8 +3,7 @@ require('dotenv').config();
 const bodyParser   = require('body-parser');
 const cookieParser = require('cookie-parser');
 const express      = require('express');
-const favicon      = require('serve-favicon');
-const mongoose     = require('mongoose');
+var cors           = require('cors');
 const logger       = require('morgan');
 const path         = require('path');
 
@@ -20,25 +19,22 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// Express View engine setup
+const allowedOrigins = ['http://localhost:3001']
+app.use(cors({
+  origin: function(origin, callback){
+    if(!origin) return callback(null, true)
 
-/*app.use(require('node-sass-middleware')({
-  src:  path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
-  sourceMap: true
-}));
-      */
+    if(allowedOrigins.indexOf(origin) === -1){
+      const msg = 'The CORS policy for this site does not' + 'allow access from the specified Origin.'
+      return callback(new Error(msg), false)
+    }
 
-/*app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
-*/
-
+    return callback(null, true)
+  }
+}))
 
 // default value for title local
 app.locals.title = 'Prueba técnica Jaya';
-
-
 
 const index = require('./routes/index');
 app.use('/', index);
