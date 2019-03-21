@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-const allowedOrigins = ['http://localhost:3001']
+const allowedOrigins = ['http://localhost:3001', 'https://jayatestfrontend.firebaseapp.com']
 app.use(cors({
   origin: function(origin, callback){
     if(!origin) return callback(null, true)
